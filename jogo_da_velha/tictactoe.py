@@ -3,13 +3,11 @@
 class TicTacToe:
     """Main TicTacToe data and operations"""
 
-    def __init__(self, player1='X', player2='O', empty_cell=' '):
-        self._player1, self._player2 = player1, player2
-        self.empty = empty_cell
+    def __init__(self):
         self._round = 0
         self._winner = None
 
-        self._turn = self._player1
+        self._turn = 1
         self._running = False
 
         self._reset_field()
@@ -37,34 +35,31 @@ class TicTacToe:
     def _reset_field(self):
         assert self._running == False, "The game is not running!"
 
-        self._field = [
-            [self.empty, self.empty, self.empty],
-            [self.empty, self.empty, self.empty],
-            [self.empty, self.empty, self.empty],
-        ]
+        self._field = [[0 for cell in range(0, 3)] for row in range(0, 3)]
 
     def _next_turn(self):
         assert self._running == True, "The game is not running!"
 
-        self._round += 1
+        self._round += 1 
 
-        if self._turn == self._player1:
-            self._turn = self._player2
-        else:
-            self._turn = self._player1
+        self._turn = 1 if self._turn == 2 else 2
 
 
     def _set_cell(self, row, col, player):
-        assert self._field[row][col] == self.empty, "This cell has already been filled!"
+        assert self._field[row][col] == 0, "This cell has already been filled!"
 
         self._field[row][col] = player
 
     def _check_gameover(self):
         assert self._running == True, "The game is not running!"
 
-        if self._field[1][1] != self.empty:
-            diagonal_1_win = self._field[0][0] == self._field[1][1] == self._field[2][2]
-            diagonal_2_win = self._field[0][2] == self._field[1][1] == self._field[2][0]
+        if self._field[1][1]:
+
+            diagonal_1_win = \
+                self._field[0][0] == self._field[1][1] == self._field[2][2]
+            
+            diagonal_2_win = \
+                self._field[0][2] == self._field[1][1] == self._field[2][0]
 
             if diagonal_1_win or diagonal_2_win:
                 self._winner = self._field[1][1]
@@ -73,14 +68,19 @@ class TicTacToe:
                 return self
 
         for row in self._field:
-            if row[0] != self.empty and row[0] == row[1] == row[2]:
+
+            if row[0] and row[0] == row[1] == row[2]:
+
                 self._winner = row[0]
                 self._running = False
 
                 return self
 
         for i in range(0, 3):
-            if self._field[0][i] != self.empty and self._field[0][i] == self._field[1][i] == self._field[2][i]:
+
+            if self._field[0][i] and \
+               self._field[0][i] == self._field[1][i] == self._field[2][i]:
+
                 self._winner = self._field[0][i]
                 self._running = False
 
@@ -92,14 +92,19 @@ class TicTacToe:
         return self
 
     def start_game(self):
-        assert self._running == False, "Can't start a game while one is running!"
+        assert self._running == False, \
+               "Can't start a game while one is running!"
 
         self._running = True
 
         return self
 
     def play(self, cell):
-        col = 0 if cell[0].upper() == "A" else 1 if cell[0].upper() == "B" else 2 if cell[0].upper() == "C" else 4
+        col = 0 if cell[0].upper() == "A" \
+              else 1 if cell[0].upper() == "B" \
+              else 2 if cell[0].upper() == "C" \
+              else 4
+
         row = int(cell[1]) - 1
 
         self._set_cell(row, col, self._turn)
@@ -114,11 +119,18 @@ class TicTacToe:
 class GabesT3:
     """TicTacToe CLI front end"""
 
-    def __init__(self, game):
+    def __init__(self, game, player1='X', player2='O', empty_cell=' '):
         self._game = game
+        self._p1, self._p2, self._empty = player1, player2, empty_cell
+
+    def get_player_symbol(self, n):
+        return self._p1 if n == 1 else self._p2 if n == 2 else self._empty
 
     def write_game(self):
-        g = self._game.field
+        g = [ 
+            [self.get_player_symbol(c) for c in row]
+            for row in self._game.field
+        ]
 
         print(f'''
                   A   B   C
@@ -140,18 +152,21 @@ class GabesT3:
 
             self.write_game()
 
-            print(f"{self._game.turn}, é a sua vez!")
+            print(f"{self.get_player_symbol(self._game.turn)}, é a sua vez!")
 
             try:
-                self._game.play(input("Insira uma letra e um número (ex.: A2): "))
+                cell = input("Insira uma letra e um número (ex.: A2): ")
+                self._game.play(cell)
+
             except IndexError:
                 print("Não dá pra jogar aí!")
-                continue
 
         self.write_game()
 
         if self._game.winner:
-            print(f'\n{self._game.winner} venceu em {self._game.round} jogadas!')
+            print(f'\n{self._game.winner} venceu '
+                  f'em {self._ga''me.round} jogadas!')
+
         else:
             print(f'\nDeu empate! :(')
 
