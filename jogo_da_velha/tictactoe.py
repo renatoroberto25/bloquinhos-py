@@ -4,7 +4,7 @@ class TicTacToe:
     """Main TicTacToe data and operations"""
 
     def __init__(self):
-        self._round = 0
+        self._round = 1
         self._winner = None
 
         self._turn = 1
@@ -158,17 +158,19 @@ class GabesT3:
                 cell = input("Insira uma letra e um número (ex.: A2): ")
                 self._game.play(cell)
 
-            except IndexError:
+            except (IndexError, AssertionError):
                 print("Não dá pra jogar aí!")
-
+                
         self.write_game()
 
         if self._game.winner:
             print(f'\n{self._game.winner} venceu '
-                  f'em {self._ga''me.round} jogadas!')
+                  f'em {self._game.round} jogadas!')
 
         else:
             print(f'\nDeu empate! :(')
+          
+        return self
 
 
 if __name__ == '__main__':
