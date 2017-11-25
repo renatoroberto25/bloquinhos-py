@@ -143,32 +143,44 @@ class GabesT3:
 
         return self
 
+    def prompt_play(self):
+        print(f"{self.get_player_symbol(self._game.turn)}, é a sua vez!")
+
+        try:
+            cell = input("Insira uma letra e um número: ")
+            self._game.play(cell)
+
+        except (IndexError, AssertionError):
+            print("Não dá pra jogar aí!")
+
+        return self
+
+    def get_winner(self):
+        if self._game.winner:
+            return self.get_player_symbol(self._game.winner)
+        else:
+            return None
+
+    def tell_winner(self):
+        winner = self.get_winner()
+        if winner:
+            print(f'\n{winner} venceu',
+                  f'em {self._game.round} jogadas!')
+        else:
+            print(f'\nDeu empate! :(')
+
+        return self
+
+
     def start(self):
         input("Pressione enter para iniciar...")
 
         self._game.start_game()
 
         while self._game.running:
-
-            self.write_game()
-
-            print(f"{self.get_player_symbol(self._game.turn)}, é a sua vez!")
-
-            try:
-                cell = input("Insira uma letra e um número (ex.: A2): ")
-                self._game.play(cell)
-
-            except (IndexError, AssertionError):
-                print("Não dá pra jogar aí!")
+            self.write_game().prompt_play()
                 
-        self.write_game()
-
-        if self._game.winner:
-            print(f'\n{self.get_player_symbol(self._game.winner)} venceu '
-                  f'em {self._game.round} jogadas!')
-
-        else:
-            print(f'\nDeu empate! :(')
+        self.write_game().tell_winner()
           
         return self
 
