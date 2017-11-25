@@ -164,7 +164,7 @@ class GabesT3:
         self.write_game()
 
         if self._game.winner:
-            print(f'\n{self._game.winner} venceu '
+            print(f'\n{self.get_player_symbol(self._game.winner)} venceu '
                   f'em {self._game.round} jogadas!')
 
         else:
