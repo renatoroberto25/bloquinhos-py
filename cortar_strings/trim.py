@@ -15,27 +15,21 @@ teststr = """
 
 newlines em        excesso"""
 
-teststr
+# Os newlines são representados pelo metachar '\n'. Temos dois
+# objetivos: remover as sequências infinitamente longas de ' ' e de
+# '\n', substituindo-as por uma única repetição de ' ' ou '\n'.
 
-# Aqui você pode ver que os newlines são representados pelo metachar
-# '\n'. Temos dois objetivos: remover as sequências infinitamente
-# longas de ' ' e de '\n', substituindo-as por uma única repetição
-# de ' ' ou '\n'.
+# O método str.split corta uma string e retorna uma lista com as
+# sequências de caracteres contidas entre os caracteres fornecidos.
 
-# Para começar, vamos ver o que faz o método str.split. Ele corta uma
-# string e retorna uma lista com as sequências de caracteres contidas
-# entre os caracteres fornecidos.
-
-teststr.split(' ')
-
-# Como você pode ver, cada item da lista é uma sequência de caracteres
+# Cada item da lista é uma sequência de caracteres
 # entre o argumento do split (que foi um espaço) contida na nossa
 # string de estudo.
-#
+
 # As sequências vazias indicam onde havia espaços desnecessários, já
 # que uma string vazia siginifica que não havia nada entre dois espaços
 # e portanto havia um espaço em excesso.
-#
+
 # Para reconstruir a string sem espaços em excesso, precisamos retirar
 # as strings vazias dessa lista. Isso será feito com uma comprehension:
 
@@ -45,20 +39,16 @@ no_spaces = [word for word in teststr.split(' ') if len(word) > 0]
 #                        nesta lista             |
 #                             mas só se a palavra for mais longa que 0
 
-no_spaces
-
-# Perfeito! Agora precisamos transformar essa lista de volta em string,
+# Agora precisamos transformar essa lista de volta em string,
 # e colocar um espaço entre cada sequência que extraímos.
-#
+
 # Vamos ver como fazer isso com str.join:
 
 nospacestr = ' '.join(no_spaces)
 #           ^
 #  junte com " " (um espaço) cada item em no_spaces
 
-nospacestr
-
-# Ta-da! Agora a string tem apenas um espaço entre cada palavra.
+# Agora a string tem apenas um espaço entre cada palavra.
 # Vamos repetir o processo sem muita explicação, com '\n' em vez de ' '
 
 no_newlines = [line for line in nospacestr.split('\n') if line]
@@ -69,18 +59,10 @@ no_newlines = [line for line in nospacestr.split('\n') if line]
 
 result = '\n'.join(no_newlines)
 
-result
+# Agora nossa string tem apenas o necessário em espaços e newlines.
+# No entanto, tratamos os newlines como palavras, e separamos eles com
+# espaços. Por isso, tem um espaço no começo de cada linha.
 
-# Vejam só! Nossa string tem apenas o necessário em espaços e newlines.
-# Podemos exibi-la da forma correta agora.
-
-print(result)
-
-# Quase lá... teve um problema no caminho.
-# Parece que nos esquecemos que tratamos os newlines como palavras, e
-# separamos eles com espaços. Por isso, tem um espaço no começo de
-# cada linha. E agora?
-#
 # Vamos voltar para a etapa no_newlines. Quando criamos a lista sem
 # as "palavras vazias", podemos remover os espaços no começo e no final
 # com str.strip:
@@ -91,8 +73,6 @@ result = '\n'.join(no_newlines)
 
 print(result)
 
-# Conseguimos!
-# 
 # Vamos construir uma função que não nos obrigue a repetirmos as
 # instruções (afinal, somos programadores ou professores?)
 
