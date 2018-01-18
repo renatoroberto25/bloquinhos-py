@@ -39,6 +39,7 @@ def ask(banknotes):
       money = count_money(amt, banknotes)
     except ValueError:
       print('Insira apenas números!')
+      continue
     
     print('Retirando R$ ' + str(amt))
     break
