@@ -19,14 +19,14 @@ def str_game(x_game, o_game):
     line2 = ' 2   {} | {} | {}'.format(*char_rows[3:6])
     line3 = ' 3   {} | {} | {}'.format(*char_rows[6:9])
 
-    return '\n'.join([head, line1, sep, line2, sep, line3])
+    return '\n'.join((head, line1, sep, line2, sep, line3))
 
 
 def square_str(cell_id):
     '''Converts a string to match one of the cell IDs'''
     col, row = cell_id
     offset_x = int(row) - 1
-    offset_y = {'a': 0, 'b': 1, 'c': 2}[col] * 3
+    offset_y = (ord(col.lower()) - 97) * 3
     return 1 << (offset_y + offset_x)
 
 
